@@ -1,0 +1,14 @@
+name: MessageCount
+version: '${project.version}'
+main: com.github.kumo0621.messagecount.MessageCount
+api-version: 1.16
+authors: [ Kumo0621 ]
+description: 個人がチャットした文字数をカウントするプラグイン
+commands:
+  MessageCount:
+    aliases: mc
+    permission: MessageCount
+
+permissions:
+  MessageCount:
+    default: op
