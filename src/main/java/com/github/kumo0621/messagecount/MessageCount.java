@@ -26,8 +26,6 @@ public final class MessageCount extends JavaPlugin implements org.bukkit.event.L
         if (sa == null) {
             sa = sb.registerNewObjective("chattotal", "dummy", "合計チャット回数数");
         }
-        sc.setDisplaySlot(DisplaySlot.BELOW_NAME);
-        sa.setDisplaySlot(DisplaySlot.PLAYER_LIST);
         score = sc;
         score2 = sa;
 
@@ -43,23 +41,19 @@ public final class MessageCount extends JavaPlugin implements org.bukkit.event.L
     public void onPlayerchat(AsyncPlayerChatEvent e) {
         Bukkit.getScheduler().runTask(this, () -> {
 
-            if (count) {
-                Player player = e.getPlayer();
-                String chat;
-                chat = e.getMessage();
-                System.out.println(chat);
-                Score sc = score.getScore(e.getPlayer().getName());
-                Score sa = score2.getScore(e.getPlayer().getName());
-                sc.setScore(sc.getScore() + chat.length());
+            String chat;
+            chat = e.getMessage();
+            System.out.println(chat);
+            Score sc = score.getScore(e.getPlayer().getName());
+            Score sa = score2.getScore(e.getPlayer().getName());
+            sc.setScore(sc.getScore() + chat.length());
 //++でやるチャット回数を計測
-                int a=1;
-                sa.setScore(sa.getScore()+a);
-                }
+            int a = 1;
+            sa.setScore(sa.getScore() + a);
             });
     }
 
     boolean count;
-
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (command.getName().equals("MessageCount")) {
@@ -70,11 +64,15 @@ public final class MessageCount extends JavaPlugin implements org.bukkit.event.L
                     switch (args[0]) {
                         case "start":
                             count = true;
-                            sender.sendMessage("チャットのカウントを開始します");
+                            sender.sendMessage("チャット計測を表示にします");
+                            score.setDisplaySlot(DisplaySlot.BELOW_NAME);
+                            score2.setDisplaySlot(DisplaySlot.PLAYER_LIST);
                             break;
                         case "end":
                             count = false;
-                            sender.sendMessage("チャットのカウントを停止します");
+                            sender.sendMessage("チャット計測を非表示にします");
+                            score.setDisplaySlot(null);
+                            score2.setDisplaySlot(null);
                             break;
                         default:
                             sender.sendMessage("不明なコマンドです。");
