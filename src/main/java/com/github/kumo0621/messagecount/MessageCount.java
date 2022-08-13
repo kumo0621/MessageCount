@@ -62,13 +62,13 @@ public final class MessageCount extends JavaPlugin implements org.bukkit.event.L
                     sender.sendMessage("引数を指定してください。");
                 } else {
                     switch (args[0]) {
-                        case "start":
+                        case "show":
                             count = true;
                             sender.sendMessage("チャット計測を表示にします");
                             score.setDisplaySlot(DisplaySlot.BELOW_NAME);
                             score2.setDisplaySlot(DisplaySlot.PLAYER_LIST);
                             break;
-                        case "end":
+                        case "hide":
                             count = false;
                             sender.sendMessage("チャット計測を非表示にします");
                             score.setDisplaySlot(null);
