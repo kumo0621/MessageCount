@@ -230,8 +230,8 @@ public final class MessageCount extends JavaPlugin implements org.bukkit.event.L
                             break;
                         case "help":
                             sender.sendMessage("ヘルプを表示します。");
-                            sender.sendMessage("show:チャット計測を表示する");
-                            sender.sendMessage("hide:チャット計測を非表示にする");
+                            sender.sendMessage("/mc show  :チャット計測を表示する");
+                            sender.sendMessage("/mc hide  :チャット計測を非表示にする");
                             sender.sendMessage("各値の結果を表示したい場合はscoreboardのsidebarで表示する。");
                             break;
                         default:
