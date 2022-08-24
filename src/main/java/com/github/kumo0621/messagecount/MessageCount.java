@@ -31,69 +31,29 @@ public final class MessageCount extends JavaPlugin implements org.bukkit.event.L
     @Override
     public void onEnable() {
         Scoreboard sb = getServer().getScoreboardManager().getMainScoreboard();
-        Objective sc = sb.getObjective("chatcount");
-        Objective sa = sb.getObjective("chattotal");
-        Objective s1 = sb.getObjective("wwwchat");
-        Objective s2 = sb.getObjective("kunkitechat");
-        Objective s3 = sb.getObjective("bokugachat");
-        Objective s4 = sb.getObjective("e.matte.tyo.chat");
-        Objective s5 = sb.getObjective("ggchat");
-        Objective s6 = sb.getObjective("konnitihachat");
-        Objective s7 = sb.getObjective("moimoichat");
-        Objective s8 = sb.getObjective("naltusichat");
-        Objective s9 = sb.getObjective("konochat");
-        Objective s10 = sb.getObjective("nyachat");
-        if (sc == null) {
-            sc = sb.registerNewObjective("chatcount", "dummy", "合計チャット文字数");
-        }
-        if (sa == null) {
-            sa = sb.registerNewObjective("chattotal", "dummy", "合計チャット回数");
-        }
-        if (s1 == null) {
-            s1 = sb.registerNewObjective("wwwchat", "dummy", "合計wを打った回数");
-        }
-        if (s2 == null) {
-            s2 = sb.registerNewObjective("kunkitechat", "dummy", "KUNさんを呼んだ回数");
-        }
-        if (s3 == null) {
-            s3 = sb.registerNewObjective("bokugachat", "dummy", "僕が作ったって言った回数");
-        }
-        if (s4 == null) {
-            s4 = sb.registerNewObjective("e.matte.tyo.chat", "dummy", "え。待って。ちょを言った回数");
-        }
-        if (s5 == null) {
-            s5 = sb.registerNewObjective("ggchat", "dummy", "ggを言った回数");
-        }
-        if (s6 == null) {
-            s6 = sb.registerNewObjective("konnitihachat", "dummy", "こんにちはを言った回数");
-        }
-        if (s7 == null) {
-            s7 = sb.registerNewObjective("moimoichat", "dummy", "moimoiを言った回数");
-        }
-        if (s8 == null) {
-            s8 = sb.registerNewObjective("naltusichat", "dummy", "なっしーって言った回数");
-        }
-        if (s9 == null) {
-            s9 = sb.registerNewObjective("konochat", "dummy", "このさんって言った回数");
-        }
-        if (s10 == null) {
-            s10 = sb.registerNewObjective("nyachat", "dummy", "にゃーを言った回数");
-        }
-        score = sc;
-        score2 = sa;
-        score3 = s1;
-        score4 = s2;
-        score5 = s3;
-        score6 = s4;
-        score7 = s5;
-        score8 = s6;
-        score9 = s7;
-        score10 = s8;
-        score11 = s9;
-        score12 = s10;
 
+        score = getOrRegisterObjective(sb, "chatcount", "合計チャット文字数");
+        score2 = getOrRegisterObjective(sb, "chattotal", "合計チャット回数");
+        score3 = getOrRegisterObjective(sb, "wwwchat", "合計wを打った回数");
+        score4 = getOrRegisterObjective(sb, "kunkitechat", "KUNさんを呼んだ回数");
+        score5 = getOrRegisterObjective(sb, "bokugachat", "僕が作ったって言った回数");
+        score6 = getOrRegisterObjective(sb, "e.matte.tyo.chat", "え。待って。ちょを言った回数");
+        score7 = getOrRegisterObjective(sb, "ggchat", "ggを言った回数");
+        score8 = getOrRegisterObjective(sb, "konnitihachat", "こんにちはを言った回数");
+        score9 = getOrRegisterObjective(sb, "moichat", "moiを言った回数");
+        score10 = getOrRegisterObjective(sb, "nassychat", "なっしーって言った回数");
+        score11 = getOrRegisterObjective(sb, "konochat", "このさんって言った回数");
+        score12 = getOrRegisterObjective(sb, "nyachat", "にゃーを言った回数");
 
         getServer().getPluginManager().registerEvents(this, this);
+    }
+
+    private Objective getOrRegisterObjective(Scoreboard sb, String name, String displayName) {
+        Objective sc = sb.getObjective(name);
+        if (sc == null) {
+            sc = sb.registerNewObjective(name, "dummy", displayName);
+        }
+        return sc;
     }
 
     @Override
