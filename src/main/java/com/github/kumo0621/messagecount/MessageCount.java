@@ -67,103 +67,34 @@ public final class MessageCount extends JavaPlugin implements org.bukkit.event.L
 
             String chat;
             chat = e.getMessage();
-            System.out.println(chat);
-            Score sc = score.getScore(e.getPlayer().getName());
-            Score sa = score2.getScore(e.getPlayer().getName());
-            Score s1 = score3.getScore(e.getPlayer().getName());
-            Score s2 = score4.getScore(e.getPlayer().getName());
-            Score s3 = score5.getScore(e.getPlayer().getName());
-            Score s4 = score6.getScore(e.getPlayer().getName());
-            Score s5 = score7.getScore(e.getPlayer().getName());
-            Score s6 = score8.getScore(e.getPlayer().getName());
-            Score s7 = score9.getScore(e.getPlayer().getName());
-            Score s8 = score10.getScore(e.getPlayer().getName());
-            Score s9 = score11.getScore(e.getPlayer().getName());
-            Score s10 = score12.getScore(e.getPlayer().getName());
+            Player player = e.getPlayer();
+            Score sc = score.getScore(player.getName());
+            Score sa = score2.getScore(player.getName());
             sc.setScore(sc.getScore() + chat.length());
             int a = 1;
             sa.setScore(sa.getScore() + a);
-            Pattern p = Pattern.compile("w|笑|ｗ|W");
-            Matcher m = p.matcher(chat);
-            int keisoku = 0;
-            while (m.find()) {
-                keisoku++;
-            }
-            s1.setScore(s1.getScore() + keisoku);
-
-            Pattern p1 = Pattern.compile("KUNkite|kunkite|くんkite|KUNきて|kunきて|くんきて|KUN来て|kun来て|くん来て|KUNキテ|kunキテ|くんキテ|KUNcome|kuncome|くんcome");
-            Matcher m1 = p1.matcher(chat);
-            int keisoku1 = 0;
-            while (m1.find()) {
-                keisoku1++;
-            }
-            s2.setScore(s2.getScore() + keisoku1);
-
-            Pattern p2 = Pattern.compile("僕が作った");
-            Matcher m2 = p2.matcher(chat);
-            int keisoku2 = 0;
-            while (m2.find()) {
-                keisoku2++;
-            }
-            s3.setScore(s3.getScore() + keisoku2);
-
-            Pattern p3 = Pattern.compile("e|tyo|matte");
-            Matcher m3 = p3.matcher(chat);
-            int keisoku3 = 0;
-            while (m3.find()) {
-                keisoku3++;
-            }
-            s4.setScore(s4.getScore() + keisoku3);
-
-            Pattern p4 = Pattern.compile("gg|GG|g");
-            Matcher m4 = p4.matcher(chat);
-            int keisoku4 = 0;
-            while (m4.find()) {
-                keisoku4++;
-            }
-            s5.setScore(s5.getScore() + keisoku4);
-
-            Pattern p5 = Pattern.compile("こんにちは");
-            Matcher m5 = p5.matcher(chat);
-            int keisoku5 = 0;
-            while (m5.find()) {
-                keisoku5++;
-            }
-            s6.setScore(s6.getScore() + keisoku5);
-
-            Pattern p6 = Pattern.compile("moi");
-            Matcher m6 = p6.matcher(chat);
-            int keisoku6 = 0;
-            while (m6.find()) {
-                keisoku6++;
-            }
-            s7.setScore(s7.getScore() + keisoku6);
-
-            Pattern p7 = Pattern.compile("なっしー");
-            Matcher m7 = p7.matcher(chat);
-            int keisoku7 = 0;
-            while (m7.find()) {
-                keisoku7++;
-            }
-            s8.setScore(s8.getScore() + keisoku7);
-
-            Pattern p8 = Pattern.compile("この");
-            Matcher m8 = p8.matcher(chat);
-            int keisoku8 = 0;
-            while (m8.find()) {
-                keisoku8++;
-            }
-            s9.setScore(s9.getScore() + keisoku8);
-
-            Pattern p9 = Pattern.compile("にゃ");
-            Matcher m9 = p9.matcher(chat);
-            int keisoku9 = 0;
-            while (m9.find()) {
-                keisoku9++;
-            }
-            s10.setScore(s10.getScore() + keisoku9);
+            incrementIfPlayerChat(score3, player, "w|笑|ｗ|W", chat);
+            incrementIfPlayerChat(score4, player, "KUNkite|kunkite|くんkite|KUNきて|kunきて|くんきて|KUN来て|kun来て|くん来て|KUNキテ|kunキテ|くんキテ|KUNcome|kuncome|くんcome", chat);
+            incrementIfPlayerChat(score5, player, "僕が作った", chat);
+            incrementIfPlayerChat(score6, player, "e|tyo|matte", chat);
+            incrementIfPlayerChat(score7, player, "gg|GG|g", chat);
+            incrementIfPlayerChat(score8, player, "こんにちは", chat);
+            incrementIfPlayerChat(score9, player, "moi", chat);
+            incrementIfPlayerChat(score10, player, "なっしー", chat);
+            incrementIfPlayerChat(score11, player, "この", chat);
+            incrementIfPlayerChat(score12, player, "にゃ", chat);
         });
+    }
 
+    private void incrementIfPlayerChat(Objective score, Player player, String pattern, String chat) {
+        Score s1 = score.getScore(player.getName());
+        Pattern p = Pattern.compile(pattern);
+        Matcher m = p.matcher(chat);
+        int keisoku = 0;
+        while (m.find()) {
+            keisoku++;
+        }
+        s1.setScore(s1.getScore() + keisoku);
     }
 
     boolean count;
