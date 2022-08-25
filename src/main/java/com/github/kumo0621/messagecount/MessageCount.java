@@ -15,35 +15,33 @@ import java.util.regex.Pattern;
 
 public final class MessageCount extends JavaPlugin implements org.bukkit.event.Listener {
 
-    private Objective score;
-    private Objective score2;
-    private Objective score3;
-    private Objective score4;
-    private Objective score5;
-    private Objective score6;
-    private Objective score7;
-    private Objective score8;
-    private Objective score9;
-    private Objective score10;
-    private Objective score11;
-    private Objective score12;
+    private ScoreCounter score;
+    private ScoreCounter score2;
+    private ScoreCounter score3;
+    private ScoreCounter score4;
+    private ScoreCounter score5;
+    private ScoreCounter score6;
+    private ScoreCounter score7;
+    private ScoreCounter score8;
+    private ScoreCounter score9;
+    private ScoreCounter score10;
+    private ScoreCounter score11;
+    private ScoreCounter score12;
 
     @Override
     public void onEnable() {
-        Scoreboard sb = getServer().getScoreboardManager().getMainScoreboard();
-
-        score = getOrRegisterObjective(sb, "chatcount", "合計チャット文字数");
-        score2 = getOrRegisterObjective(sb, "chattotal", "合計チャット回数");
-        score3 = getOrRegisterObjective(sb, "wwwchat", "合計wを打った回数");
-        score4 = getOrRegisterObjective(sb, "kunkitechat", "KUNさんを呼んだ回数");
-        score5 = getOrRegisterObjective(sb, "bokugachat", "僕が作ったって言った回数");
-        score6 = getOrRegisterObjective(sb, "e.matte.tyo.chat", "え。待って。ちょを言った回数");
-        score7 = getOrRegisterObjective(sb, "ggchat", "ggを言った回数");
-        score8 = getOrRegisterObjective(sb, "konnitihachat", "こんにちはを言った回数");
-        score9 = getOrRegisterObjective(sb, "moichat", "moiを言った回数");
-        score10 = getOrRegisterObjective(sb, "nassychat", "なっしーって言った回数");
-        score11 = getOrRegisterObjective(sb, "konochat", "このさんって言った回数");
-        score12 = getOrRegisterObjective(sb, "nyachat", "にゃーを言った回数");
+        score = new ScoreCounter("chatcount", "合計チャット文字数", "");
+        score2 = new ScoreCounter("chattotal", "合計チャット回数", "");
+        score3 = new ScoreCounter("wwwchat", "合計wを打った回数", "w|笑|ｗ|W");
+        score4 = new ScoreCounter("kunkitechat", "KUNさんを呼んだ回数", "KUNkite|kunkite|くんkite|KUNきて|kunきて|くんきて|KUN来て|kun来て|くん来て|KUNキテ|kunキテ|くんキテ|KUNcome|kuncome|くんcome");
+        score5 = new ScoreCounter("bokugachat", "僕が作ったって言った回数", "僕が作った");
+        score6 = new ScoreCounter("e.matte.tyo.chat", "え。待って。ちょを言った回数", "e|tyo|matte");
+        score7 = new ScoreCounter("ggchat", "ggを言った回数", "gg|GG|g");
+        score8 = new ScoreCounter("konnitihachat", "こんにちはを言った回数", "こんにちは");
+        score9 = new ScoreCounter("moichat", "moiを言った回数", "moi");
+        score10 = new ScoreCounter("nassychat", "なっしーって言った回数", "なっしー");
+        score11 = new ScoreCounter("konochat", "このさんって言った回数", "この");
+        score12 = new ScoreCounter("nyachat", "にゃーを言った回数", "にゃ");
 
         getServer().getPluginManager().registerEvents(this, this);
     }
@@ -68,33 +66,19 @@ public final class MessageCount extends JavaPlugin implements org.bukkit.event.L
             String chat;
             chat = e.getMessage();
             Player player = e.getPlayer();
-            Score sc = score.getScore(player.getName());
-            Score sa = score2.getScore(player.getName());
-            sc.setScore(sc.getScore() + chat.length());
-            int a = 1;
-            sa.setScore(sa.getScore() + a);
-            incrementIfPlayerChat(score3, player, "w|笑|ｗ|W", chat);
-            incrementIfPlayerChat(score4, player, "KUNkite|kunkite|くんkite|KUNきて|kunきて|くんきて|KUN来て|kun来て|くん来て|KUNキテ|kunキテ|くんキテ|KUNcome|kuncome|くんcome", chat);
-            incrementIfPlayerChat(score5, player, "僕が作った", chat);
-            incrementIfPlayerChat(score6, player, "e|tyo|matte", chat);
-            incrementIfPlayerChat(score7, player, "gg|GG|g", chat);
-            incrementIfPlayerChat(score8, player, "こんにちは", chat);
-            incrementIfPlayerChat(score9, player, "moi", chat);
-            incrementIfPlayerChat(score10, player, "なっしー", chat);
-            incrementIfPlayerChat(score11, player, "この", chat);
-            incrementIfPlayerChat(score12, player, "にゃ", chat);
+            score.addScore(player, chat.length());
+            score2.addScore(player, 1);
+            score3.addScore(player, score3.getWordCount(chat));
+            score4.addScore(player, score4.getWordCount(chat));
+            score5.addScore(player, score5.getWordCount(chat));
+            score6.addScore(player, score6.getWordCount(chat));
+            score7.addScore(player, score7.getWordCount(chat));
+            score8.addScore(player, score8.getWordCount(chat));
+            score9.addScore(player, score9.getWordCount(chat));
+            score10.addScore(player, score10.getWordCount(chat));
+            score11.addScore(player, score11.getWordCount(chat));
+            score12.addScore(player, score12.getWordCount(chat));
         });
-    }
-
-    private void incrementIfPlayerChat(Objective score, Player player, String pattern, String chat) {
-        Score s1 = score.getScore(player.getName());
-        Pattern p = Pattern.compile(pattern);
-        Matcher m = p.matcher(chat);
-        int keisoku = 0;
-        while (m.find()) {
-            keisoku++;
-        }
-        s1.setScore(s1.getScore() + keisoku);
     }
 
     boolean count;
@@ -110,14 +94,14 @@ public final class MessageCount extends JavaPlugin implements org.bukkit.event.L
                         case "show":
                             count = true;
                             sender.sendMessage("チャット計測を表示にします");
-                            score.setDisplaySlot(DisplaySlot.BELOW_NAME);
-                            score2.setDisplaySlot(DisplaySlot.PLAYER_LIST);
+                            score.objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
+                            score2.objective.setDisplaySlot(DisplaySlot.PLAYER_LIST);
                             break;
                         case "hide":
                             count = false;
                             sender.sendMessage("チャット計測を非表示にします");
-                            score.setDisplaySlot(null);
-                            score2.setDisplaySlot(null);
+                            score.objective.setDisplaySlot(null);
+                            score2.objective.setDisplaySlot(null);
                             break;
                         case "help":
                             sender.sendMessage("ヘルプを表示します。");

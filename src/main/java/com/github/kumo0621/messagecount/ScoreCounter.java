@@ -30,7 +30,7 @@ public class ScoreCounter {
     /**
      * scoreの入れ物
      */
-    private Objective objective;
+    public Objective objective;
 
     public ScoreCounter(String name, String displayName, String pattern) {
         this.name = name;
@@ -54,7 +54,7 @@ public class ScoreCounter {
     /**
      * チャットの中に指定された文字が含まれていないかの確認
      */
-    private int getWordCount(String chat) {
+    public int getWordCount(String chat) {
         Matcher m = pattern.matcher(chat);
         int keisoku = 0;
         while (m.find()) {
@@ -67,7 +67,7 @@ public class ScoreCounter {
     /**
      * チャットに指定文字が含まれているかをチェック
      */
-    private void addscore(Player player, int count) {
+    public void addScore(Player player, int count) {
         Score s1 = objective.getScore(player.getName());
         s1.setScore(s1.getScore() + count);
     }
