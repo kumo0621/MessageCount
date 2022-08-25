@@ -7,51 +7,36 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.*;
+import org.bukkit.scoreboard.DisplaySlot;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class MessageCount extends JavaPlugin implements org.bukkit.event.Listener {
 
     private ScoreCounter score;
     private ScoreCounter score2;
-    private ScoreCounter score3;
-    private ScoreCounter score4;
-    private ScoreCounter score5;
-    private ScoreCounter score6;
-    private ScoreCounter score7;
-    private ScoreCounter score8;
-    private ScoreCounter score9;
-    private ScoreCounter score10;
-    private ScoreCounter score11;
-    private ScoreCounter score12;
+
+    private List<ScoreCounter> scoreList;
 
     @Override
     public void onEnable() {
         score = new ScoreCounter("chatcount", "合計チャット文字数", "");
         score2 = new ScoreCounter("chattotal", "合計チャット回数", "");
-        score3 = new ScoreCounter("wwwchat", "合計wを打った回数", "w|笑|ｗ|W");
-        score4 = new ScoreCounter("kunkitechat", "KUNさんを呼んだ回数", "KUNkite|kunkite|くんkite|KUNきて|kunきて|くんきて|KUN来て|kun来て|くん来て|KUNキテ|kunキテ|くんキテ|KUNcome|kuncome|くんcome");
-        score5 = new ScoreCounter("bokugachat", "僕が作ったって言った回数", "僕が作った");
-        score6 = new ScoreCounter("e.matte.tyo.chat", "え。待って。ちょを言った回数", "e|tyo|matte");
-        score7 = new ScoreCounter("ggchat", "ggを言った回数", "gg|GG|g");
-        score8 = new ScoreCounter("konnitihachat", "こんにちはを言った回数", "こんにちは");
-        score9 = new ScoreCounter("moichat", "moiを言った回数", "moi");
-        score10 = new ScoreCounter("nassychat", "なっしーって言った回数", "なっしー");
-        score11 = new ScoreCounter("konochat", "このさんって言った回数", "この");
-        score12 = new ScoreCounter("nyachat", "にゃーを言った回数", "にゃ");
+        scoreList = new ArrayList<>();
+        scoreList.add(new ScoreCounter("wwwchat", "合計wを打った回数", "w|笑|ｗ|W"));
+        scoreList.add(new ScoreCounter("kunkitechat", "KUNさんを呼んだ回数", "KUNkite|kunkite|くんkite|KUNきて|kunきて|くんきて|KUN来て|kun来て|くん来て|KUNキテ|kunキテ|くんキテ|KUNcome|kuncome|くんcome"));
+        scoreList.add(new ScoreCounter("bokugachat", "僕が作ったって言った回数", "僕が作った"));
+        scoreList.add(new ScoreCounter("e.matte.tyo.chat", "え。待って。ちょを言った回数", "e|tyo|matte"));
+        scoreList.add(new ScoreCounter("ggchat", "ggを言った回数", "gg|GG|g"));
+        scoreList.add(new ScoreCounter("konnitihachat", "こんにちはを言った回数", "こんにちは"));
+        scoreList.add(new ScoreCounter("moichat", "moiを言った回数", "moi"));
+        scoreList.add(new ScoreCounter("nassychat", "なっしーって言った回数", "なっしー"));
+        scoreList.add(new ScoreCounter("konochat", "このさんって言った回数", "この"));
+        scoreList.add(new ScoreCounter("nyachat", "にゃーを言った回数", "にゃ"));
 
         getServer().getPluginManager().registerEvents(this, this);
-    }
-
-    private Objective getOrRegisterObjective(Scoreboard sb, String name, String displayName) {
-        Objective sc = sb.getObjective(name);
-        if (sc == null) {
-            sc = sb.registerNewObjective(name, "dummy", displayName);
-        }
-        return sc;
     }
 
     @Override
@@ -68,16 +53,9 @@ public final class MessageCount extends JavaPlugin implements org.bukkit.event.L
             Player player = e.getPlayer();
             score.addScore(player, chat.length());
             score2.addScore(player, 1);
-            score3.addScore(player, score3.getWordCount(chat));
-            score4.addScore(player, score4.getWordCount(chat));
-            score5.addScore(player, score5.getWordCount(chat));
-            score6.addScore(player, score6.getWordCount(chat));
-            score7.addScore(player, score7.getWordCount(chat));
-            score8.addScore(player, score8.getWordCount(chat));
-            score9.addScore(player, score9.getWordCount(chat));
-            score10.addScore(player, score10.getWordCount(chat));
-            score11.addScore(player, score11.getWordCount(chat));
-            score12.addScore(player, score12.getWordCount(chat));
+            for (ScoreCounter s : scoreList) {
+                s.addScore(player, s.getWordCount(chat));
+            }
         });
     }
 
