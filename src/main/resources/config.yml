@@ -1,0 +1,29 @@
+counters:
+  - name: wwwchat
+    displayName: 合計wを打った回数
+    pattern: w|笑|ｗ|W
+  - name: kunkitechat
+    displayName: KUNさんを呼んだ回数
+    pattern: KUNkite|kunkite|くんkite|KUNきて|kunきて|くんきて|KUN来て|kun来て|くん来て|KUNキテ|kunキテ|くんキテ|KUNcome|kuncome|くんcome
+  - name: bokugachat
+    displayName: 僕が作ったって言った回数
+    pattern: 僕が作った
+  - name: e.matte.tyo.chat
+    displayName: え。待って。ちょを言った回数
+    pattern: e|tyo|matte
+  - name: konnitihachat
+    displayName: こんにちはを言った回数
+    pattern: こんにちは
+  - name: moichat
+    displayName: moiを言った回数
+    pattern: moi
+  - name: nassychat
+    displayName: なっしーって言った回数
+    pattern: なっしー
+  - name: konochat
+    displayName: このさんって言った回数
+    pattern: この
+  - name: nyachat
+    displayName: にゃーを言った回数
+    pattern: にゃ
+

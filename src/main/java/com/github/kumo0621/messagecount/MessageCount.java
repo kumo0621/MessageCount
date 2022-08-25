@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public final class MessageCount extends JavaPlugin implements org.bukkit.event.Listener {
 
@@ -25,17 +26,14 @@ public final class MessageCount extends JavaPlugin implements org.bukkit.event.L
         score = new ScoreCounter("chatcount", "合計チャット文字数", "");
         score2 = new ScoreCounter("chattotal", "合計チャット回数", "");
         scoreList = new ArrayList<>();
-        scoreList.add(new ScoreCounter("wwwchat", "合計wを打った回数", "w|笑|ｗ|W"));
-        scoreList.add(new ScoreCounter("kunkitechat", "KUNさんを呼んだ回数", "KUNkite|kunkite|くんkite|KUNきて|kunきて|くんきて|KUN来て|kun来て|くん来て|KUNキテ|kunキテ|くんキテ|KUNcome|kuncome|くんcome"));
-        scoreList.add(new ScoreCounter("bokugachat", "僕が作ったって言った回数", "僕が作った"));
-        scoreList.add(new ScoreCounter("e.matte.tyo.chat", "え。待って。ちょを言った回数", "e|tyo|matte"));
-        scoreList.add(new ScoreCounter("ggchat", "ggを言った回数", "gg|GG|g"));
-        scoreList.add(new ScoreCounter("konnitihachat", "こんにちはを言った回数", "こんにちは"));
-        scoreList.add(new ScoreCounter("moichat", "moiを言った回数", "moi"));
-        scoreList.add(new ScoreCounter("nassychat", "なっしーって言った回数", "なっしー"));
-        scoreList.add(new ScoreCounter("konochat", "このさんって言った回数", "この"));
-        scoreList.add(new ScoreCounter("nyachat", "にゃーを言った回数", "にゃ"));
-
+        saveDefaultConfig();
+        @NotNull List<Map<?, ?>> counters = getConfig().getMapList("counters");
+        for (Map<?, ?> counter : counters) {
+            String name = (String) counter.get("name");
+            String displayName = (String) counter.get("displayName");
+            String pattern = (String) counter.get("pattern");
+            scoreList.add(new ScoreCounter(name, displayName, pattern));
+        }
         getServer().getPluginManager().registerEvents(this, this);
     }
 
