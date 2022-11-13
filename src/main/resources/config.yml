@@ -26,4 +26,3 @@ counters:
   - name: nyachat
     displayName: にゃーを言った回数
     pattern: にゃ
-

@@ -38,7 +38,7 @@ class ScoreCounter(
      * scoreboardの作成の関数
      */
     private val orRegisterObjective: Objective
-        private get() {
+        get() {
             var sc = sb.getObjective(name)
             if (sc == null) {
                 sc = sb.registerNewObjective(name, "dummy", displayName)

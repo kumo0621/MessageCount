@@ -19,15 +19,17 @@ class MessageCount : JavaPlugin(), Listener {
         score2 = ScoreCounter("chattotal", "合計チャット回数", "")
         scoreList = ArrayList()
         saveDefaultConfig()
-        val counters = config.getMapList("counters")
-        for (counter in counters) {
-            val name = counter["name"] as String?
-            val displayName = counter["displayName"] as String?
-            val pattern = counter["pattern"] as String?
-            if (name != null && displayName != null && pattern != null) {
-                scoreList.add(ScoreCounter(name, displayName, pattern))
+        val counters = config.getMapList("counters").mapNotNull {
+            val name = it["name"] as String?
+            val displayName = it["displayName"] as String?
+            val pattern = it["pattern"] as String?
+            return@mapNotNull if (name != null && displayName != null && pattern != null) {
+                ScoreCounter(name, displayName, pattern)
+            } else {
+                null
             }
         }
+        scoreList.addAll(counters)
         server.pluginManager.registerEvents(this, this)
     }
 
@@ -38,33 +40,29 @@ class MessageCount : JavaPlugin(), Listener {
     @EventHandler
     fun onPlayerchat(e: AsyncPlayerChatEvent) {
         Bukkit.getScheduler().runTask(this, Runnable {
-            val chat: String
-            chat = e.message
+            val chat = e.message
             val player = e.player
             score.addScore(player, chat.length)
             score2.addScore(player, 1)
-            for (s in scoreList) {
-                s.addScore(player, s.getWordCount(chat))
+            scoreList.forEach {
+                it.addScore(player, it.getWordCount(chat))
             }
         })
     }
 
-    var count = false
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         if (command.name == "MessageCount") {
             if (sender is Player) {
-                if (args.size == 0) {
+                if (args.isEmpty()) {
                     sender.sendMessage("引数を指定してください。")
                 } else {
                     when (args[0]) {
                         "show" -> {
-                            count = true
                             sender.sendMessage("チャット計測を表示にします")
                             score.objective.displaySlot = DisplaySlot.BELOW_NAME
                             score2.objective.displaySlot = DisplaySlot.PLAYER_LIST
                         }
                         "hide" -> {
-                            count = false
                             sender.sendMessage("チャット計測を非表示にします")
                             score.objective.displaySlot = null
                             score2.objective.displaySlot = null
